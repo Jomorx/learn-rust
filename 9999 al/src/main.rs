@@ -1,30 +1,29 @@
-use std::fmt::Display;
-
-#[derive(Clone)]
+#[derive(Debug)]
 struct Point {
-    x: u32,
-    y: u32,
+    x: i32,
+    y: i32,
 }
-
-impl Display for Point {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let s = format!("{} {}", self.x, self.y);
-        f.write_str(&s)
+impl From<(i32, i32)> for Point {    // 实现从 (i32, i32) 到 Point 的转换
+    fn from((x, y): (i32, i32)) -> Self {
+        Point { x, y }
     }
 }
-
-impl Drop for Point {
-    fn drop(&mut self) {
-        // todo!()
-        println!("drop x")
+impl From<[i32; 2]> for Point {      // 实现从 [i32; 2] 到 Point 的转换
+    fn from([x, y]: [i32; 2]) -> Self {
+        Point { x, y }
     }
 }
+fn example() {
+    // 使用from()转换不同类型
+    let origin1 = Point::from((0, 0));
+    let origin2 = Point::from([0, 0]);
+    // 使用into()转换不同类型
+    let origin3: Point = (0, 0).into();
+    let origin4: Point = [0, 0].into();
+    println!("{:?} {:?} {:?} {:?}",origin1,origin2,origin3,origin4)
+}
 
-fn main() {
-    {
-        let a = Point { x: 10, y: 10 };
-        let b = a; // 这里发生了所有权 move，a 在后续不能使用了
-        println!("{}", b)
-    }
-    println!("111")
+
+fn main(){
+    example()
 }
