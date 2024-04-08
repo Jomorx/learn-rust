@@ -1,29 +1,10 @@
-#[derive(Debug)]
-struct Point {
-    x: i32,
-    y: i32,
-}
-impl From<(i32, i32)> for Point {    // 实现从 (i32, i32) 到 Point 的转换
-    fn from((x, y): (i32, i32)) -> Self {
-        Point { x, y }
-    }
-}
-impl From<[i32; 2]> for Point {      // 实现从 [i32; 2] 到 Point 的转换
-    fn from([x, y]: [i32; 2]) -> Self {
-        Point { x, y }
-    }
-}
-fn example() {
-    // 使用from()转换不同类型
-    let origin1 = Point::from((0, 0));
-    let origin2 = Point::from([0, 0]);
-    // 使用into()转换不同类型
-    let origin3: Point = (0, 0).into();
-    let origin4: Point = [0, 0].into();
-    println!("{:?} {:?} {:?} {:?}",origin1,origin2,origin3,origin4)
-}
-
-
-fn main(){
-    example()
+fn main() {
+    let some_n = Some(123);
+    let some_n2 = some_n.map(|c| c * 2);
+    // 和 map 用法一样，只不过 map 会自动将返回值用 Some 包起来
+    // 而 and_then 则需要手动这么做
+    let some_n3 = some_n.and_then(|c| Some(c * 2));
+    println!("{:?}", some_n);  // Some(123)
+    println!("{:?}", some_n2);  // Some(246)
+    println!("{:?}", some_n3);  // Some(246)
 }
