@@ -1,19 +1,72 @@
-mod isPalindrome;
-mod macro_test;
+use std::fmt::Debug;
+use std::fmt::Display;
 
-use std::{collections::HashMap, vec};
+use std::ops::Add;
 
-fn main() {
-    let _res = two_sum(vec![5,4,6,2], 0);
+#[derive(Copy, Clone)]
+struct Point<T> {
+    x: T,
+    y: T,
 }
-fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
-    let mut map = HashMap::new();
-    for (index,item) in nums.iter().enumerate() {
-       if let Some(val) = map.get(item) {
-           return vec![index as i32,*val as i32]
-       }else {
-           map.insert(target-item, index as i32);
-       }
+
+impl<T> Point<T>{
+    fn new(x: T, y: T) -> Self {
+        Self { x, y }
     }
-    vec![-1,-1]
+}
+impl<T> Add<Point<T>> for Point<T>
+where
+    T: Copy + Display + Add<Output = T>,
+{
+    type Output = Point<T>;
+    fn add(self, rhs: Self) -> Self::Output {
+        Self {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+        }
+    }
+}
+
+impl<T> Add<T> for Point<T> 
+    where
+        T: Copy + Add<Output = T>{
+    type Output = Self;
+
+    fn add(self, rhs: T) -> Self::Output {
+        Self {
+            x:self.x+rhs,
+            y:self.y+rhs
+        }
+    }
+}
+
+impl Add<Point<f64>> for Point<i32> 
+{
+    type Output = Point<i32>;
+    fn add(self, rhs: Point<f64>) -> Self::Output {
+        Self {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+        }
+    }
+}
+
+
+impl<T> Debug for Point<T> where T:Display{
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f,"Point {{ x :{} y :{} }}",self.x,self.y)
+    }
+}
+
+impl<T> Display for Point<T> where T:Display{
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f,"Point {{ x :{} y :{} }}",self.x,self.y)
+    }
+}
+fn main() {
+    let p1:Point<i32> = Point::new(1, 2);
+    let p2 = Point::new(0.2, 0.4);
+    println!("{}",p1+p2);
+    println!("{:?}",p1+2_i32);
+
 }
