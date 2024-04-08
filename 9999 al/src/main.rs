@@ -1,10 +1,23 @@
-fn main() {
-    let some_n = Some(123);
-    let some_n2 = some_n.map(|c| c * 2);
-    // 和 map 用法一样，只不过 map 会自动将返回值用 Some 包起来
-    // 而 and_then 则需要手动这么做
-    let some_n3 = some_n.and_then(|c| Some(c * 2));
-    println!("{:?}", some_n);  // Some(123)
-    println!("{:?}", some_n2);  // Some(246)
-    println!("{:?}", some_n3);  // Some(246)
+#[derive(Debug)]
+struct Point {
+    x:i32,
+    y:i32
 }
+
+impl From<[i32; 2]> for Point {      // 实现从 [i32; 2] 到 Point 的转换
+    fn from([x, y]: [i32; 2]) -> Self {
+        Point { x, y }
+    }
+}
+fn main() {
+    let p1 = Point::from([1,2]);
+    let p2= Point::from([1,2]);
+
+    let mut list:Vec<_> = Vec::new();
+    list.push(p1);
+    list.push(p2);
+    let mut list2 = list.into_iter()
+    .map(|point| (Point::from([point.x,point.y])))
+    .collect::<Vec<Point>>();
+    println!("{:?}",list)
+} 
